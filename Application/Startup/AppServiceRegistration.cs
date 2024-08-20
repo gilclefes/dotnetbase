@@ -83,8 +83,7 @@ namespace dotnetbase.Application.Startup
             services.AddScoped<UsersService>();
             services.AddScoped<RolesService>();
             services.AddScoped<AuthService>();
-            services.AddScoped<YaboUtilsService>();
-            services.AddScoped<AuthorizePaymentService>();
+            services.AddScoped<UtilsService>();
             services.AddScoped<CodeGenService>();
 
             services.Scan(selector => selector
@@ -112,9 +111,7 @@ namespace dotnetbase.Application.Startup
         {
             // add custom background tasks here
             services.AddTransient<ExampleTask>();
-            services.AddTransient<OrderAssignmentTask>();
-            services.AddTransient<OrderRefundTask>();
-            services.AddTransient<SubscriptionUpdateTask>();
+
             return services;
         }
     }

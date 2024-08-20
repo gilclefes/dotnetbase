@@ -17,7 +17,7 @@ using ILogger = Spark.Library.Logging.ILogger;
 
 namespace dotnetbase.Application.Services
 {
-    public class YaboUtilsService
+    public class UtilsService
     {
         private readonly DatabaseContext _db;
         private readonly IWebHostEnvironment _env;
@@ -28,7 +28,7 @@ namespace dotnetbase.Application.Services
 
 
 
-        public YaboUtilsService(DatabaseContext db, IWebHostEnvironment env, IDispatcher dispatcher, ILogger logger)
+        public UtilsService(DatabaseContext db, IWebHostEnvironment env, IDispatcher dispatcher, ILogger logger)
         {
             _db = db;
             _env = env;
@@ -39,21 +39,58 @@ namespace dotnetbase.Application.Services
 
 
 
-        public async Task<bool> CustomerHasPaymentProfile(int clientId)
+
+
+        public async Task<string> SendNotification(string message, string clientEmail)
         {
-            var customerProfile = await _db.AuthorizeNetCustomerProfiles.FindAsync(clientId);
 
-            if (customerProfile == null || (customerProfile.CardPaymentProfileId == null && customerProfile.BankAccountPaymentProfileId == null))
+
+
+            try
             {
-                return false;
+                var path = Path.Combine(
+                  _env.ContentRootPath,
+                  "Storage/yabotest-b1e2dd0f6cd8.json");
+
+                if (FirebaseApp.DefaultInstance == null)
+                {
+                    var credential = GoogleCredential.FromFile(path);
+                    FirebaseApp.Create(new AppOptions()
+                    {
+                        Credential = credential,
+                    });
+
+                }
+
+                var userToken = await _db.UserDeviceTokens.FirstOrDefaultAsync(x => x.Email == clientEmail);
+
+                if (userToken != null)
+                {
+                    var fcmMessage = new Message()
+                    {
+                        Notification = new FirebaseAdmin.Messaging.Notification()
+                        {
+                            Title = "Yabo Message",
+                            Body = message,
+                        },
+                        Token = userToken.DeviceToken,
+                    };
+
+                    string response = await FirebaseMessaging.DefaultInstance.SendAsync(fcmMessage);
+
+                    return response;
+                }
+
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                _logger?.Error($"Notification Error: {ex}");
+                return string.Empty;
+
             }
 
-            if (customerProfile.CardPaymentProfileId != null || customerProfile.BankAccountPaymentProfileId != null)
-            {
-                return true;
-            }
-
-            return false;
 
         }
 

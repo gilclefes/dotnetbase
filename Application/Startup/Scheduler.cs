@@ -11,18 +11,11 @@ namespace dotnetbase.Application.Startup
             {
                 // example scheduled job
                 scheduler
-                   .Schedule<OrderAssignmentTask>()
-                   .EveryThirtyMinutes().PreventOverlapping(nameof(OrderAssignmentTask));
+                   .Schedule<ExampleTask>()
+                   .EveryThirtyMinutes().PreventOverlapping(nameof(ExampleTask));
 
                 // scheduler
-                scheduler
-                  .Schedule<OrderRefundTask>()
-                  .Hourly().PreventOverlapping(nameof(OrderRefundTask));
 
-                // scheduler
-                scheduler
-                  .Schedule<SubscriptionUpdateTask>()
-                  .Hourly().PreventOverlapping(nameof(SubscriptionUpdateTask));
             });
             return services;
         }

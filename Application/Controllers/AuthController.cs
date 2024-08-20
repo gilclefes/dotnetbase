@@ -79,7 +79,7 @@ namespace dotnetbase.Application.Controllers
                .Skip((validFilter.PageNumber - 1) * validFilter.PageSize)
                .Take(validFilter.PageSize).AsNoTracking()
                .ToListAsync();
-            var totalRecords = await _context.Clients.CountAsync();
+            var totalRecords = 100;;
 
             var usersWithRoles = new List<ApplicationUserDto>();
 

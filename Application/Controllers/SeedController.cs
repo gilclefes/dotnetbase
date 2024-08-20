@@ -110,8 +110,6 @@ namespace dotnetbase.Application.Controllers
                 .AsNoTracking()
                 .ToDictionary(x => (
                     Name: x.Name,
-
-
                     CountryId: x.CountryId));
 
             // iterates through all rows, skipping the first one 

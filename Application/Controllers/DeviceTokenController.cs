@@ -25,10 +25,10 @@ namespace dotnetbase.Application.Controllers
     public class DeviceTokenController : ControllerBase
     {
         private readonly DatabaseContext _context;
-        private readonly YaboUtilsService _yaboValidationService;
+        private readonly UtilsService _yaboValidationService;
 
 
-        public DeviceTokenController(DatabaseContext context, YaboUtilsService yaboValidationService)
+        public DeviceTokenController(DatabaseContext context, UtilsService yaboValidationService)
         {
             _context = context;
             _yaboValidationService = yaboValidationService;
@@ -41,9 +41,9 @@ namespace dotnetbase.Application.Controllers
         [HttpGet("{email}")]
         public async Task<ActionResult> GetUserDeviceToken(string email)
         {
-            if (_context.Charges == null)
+            if (_context.UserDeviceTokens == null)
             {
-                return NotFound(new { message = "Entity set 'DatabaseContext.Charges'  is null." });
+                return NotFound(new { message = "Entity set 'DatabaseContext.UserDeviceTokens'  is null." });
             }
             var deviceToken = await _context.UserDeviceTokens.FirstOrDefaultAsync(x => x.Email == email);
 
