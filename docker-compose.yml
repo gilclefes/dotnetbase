@@ -1,0 +1,29 @@
+version: "3.8"
+services:
+  db:
+    platform: linux/x86_64
+    image: mysql/mysql-server:8.0.23
+    ports:
+      - "33306:3306"
+    container_name: yabomysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty123
+      MYSQL_DATABASE: yabocleandb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: qwerty123
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+
+  dotnetbase:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:5000"
+    container_name: dotnetbase
+
+volumes:
+  dbdata:

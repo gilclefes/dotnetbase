@@ -1,0 +1,61 @@
+version: "3.8"
+services:
+  db:
+    image: mysql/mysql-server:8.0.23
+    ports:
+      - "33306:3306"
+    container_name: yabomysql
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty123
+      MYSQL_DATABASE: yabocleandb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: qwerty123
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+  dotnetbase:
+    depends_on:
+      - db
+    image: docker.io/gilclefes/dotnetbaseimg:v2
+    ports:
+      - "8080:5000"
+      - "8081:5001"
+    container_name: dotnetbase
+    environment: # Add this section
+      ASPNETCORE_ENVIRONMENT: Development
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: yabocleandb
+      DB_USERNAME: root
+      DB_PASSWORD: qwerty123
+      IMAGE_STORAGE_PATH: "Storage/Images/"
+      LOG_CHANNEL: file
+      LOG_LEVEL: information
+      MAIL_MAILER: file
+      MAIL_PORT: 25
+      MAIL_FROM_ADDRESS: "hello@yabo.com"
+      MAIL_FROM_NAME: "Yabo Admin"
+      ENVUSER_ROLE_ID: "RegisteredUser"
+      RESET_PASSWORD_LINK: "http://5.161.118.86/reset-password"
+      EMAIL_CONFIRMATION_LINK: "http://5.161.118.86/confirm-email"
+      DEFAULT_PAGE_SIZE: 10
+      DEFAULT_PAGE_NUMBER: 1
+      NEW_ORDERSTATUS_ID: 1
+      CANCEL_ORDERSTATUS_ID: 3
+      PAID_ORDERSTATUS_ID: 2
+      PICKED_ORDERSTATUS_ID: 4
+      SERVICEINPROGRESS_ORDERSTATUS_ID: 5
+      SERVICECOMPLETE_ORDERSTATUS_ID: 6
+      CUSTOMERCONFIRMED_ORDERSTATUS_ID: 7
+      REG_STATUS_ID: 1
+    volumes: # Add this section
+      - imagesfolder:/Storage # Replace with your actual paths
+  yabofrontendapp:
+    image: docker.io/gilclefes/yabofrontendimg-amd64:v6
+    container_name: yabofrontend
+    ports:
+      - 80:80
+volumes:
+  dbdata:
+  imagesfolder:
