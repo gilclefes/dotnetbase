@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace dotnetbase.Application.Services
 {
-    public static class YaboUtils
+    public static class Utils
     {
         private static Random random = new Random();
 
@@ -25,5 +25,7 @@ namespace dotnetbase.Application.Services
                 .Select(s => s[random.Next(s.Length)]).ToArray());
             return timestamp + randomString;
         }
+
+        
     }
 }
