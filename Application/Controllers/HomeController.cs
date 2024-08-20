@@ -20,7 +20,7 @@ namespace dotnetbase.Application.Controllers
         [Route("")]
         public IActionResult Index()
         {
-            return Ok("Yabo is fine");
+            return Ok("DotNetBase is fine");
         }
 
         [HttpGet, Authorize]

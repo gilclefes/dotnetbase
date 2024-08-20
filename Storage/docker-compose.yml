@@ -35,7 +35,7 @@ services:
       MAIL_MAILER: file
       MAIL_PORT: 25
       MAIL_FROM_ADDRESS: "hello@yabo.com"
-      MAIL_FROM_NAME: "Yabo Admin"
+      MAIL_FROM_NAME: "DotNetBase Admin"
       ENVUSER_ROLE_ID: "RegisteredUser"
       RESET_PASSWORD_LINK: "http://5.161.118.86/reset-password"
       EMAIL_CONFIRMATION_LINK: "http://5.161.118.86/confirm-email"

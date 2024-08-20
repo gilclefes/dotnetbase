@@ -70,7 +70,7 @@ namespace dotnetbase.Application.Services
                     {
                         Notification = new FirebaseAdmin.Messaging.Notification()
                         {
-                            Title = "Yabo Message",
+                            Title = "DotNetBase Message",
                             Body = message,
                         },
                         Token = userToken.DeviceToken,
